@@ -13,7 +13,7 @@
       "type": "text",
       "id": "end_date",
       "label": "Offer End Date",
-      "info": "Optional. Enter date (01/01/2026 or 2026-01-01). Leave blank = 15 days from today.",
+      "info": "Enter YYYY-MM-DD (2026-01-01) or DD/MM/YYYY (01/01/2026). Leave blank = 15 days from today.",
       "default": "2026-01-01"
     },
     {
@@ -47,11 +47,11 @@
     {
       "type": "range",
       "id": "padding",
-      "min": 10,
-      "max": 50,
+      "min": 4,
+      "max": 40,
       "step": 1,
       "unit": "px",
-      "label": "Padding",
+      "label": "Vertical Padding",
       "default": 12
     }
   ]
@@ -63,62 +63,160 @@
   {{ section.settings.font_family | font_face: font_display: 'swap' }}
 {%- endif -%}
 
-.noticebar-countdown {
-  background: {{ section.settings.bg_color }};
-  color: {{ section.settings.text_color }};
-  padding: {{ section.settings.padding }}px 20px;
-  text-align: center;
+/* Wrapper */
+#noticebar-wrapper-{{ section.id }} {
+  width: 100%;
+}
+
+/* Main bar - Black background like the image */
+#noticebar-{{ section.id }} {
+  background: #000000 !important;
+  color: #ffffff !important;
+  padding: {{ section.settings.padding }}px 20px !important;
   font-size: {{ section.settings.font_size }}px !important;
   font-family: {{ section.settings.font_family.family }}, {{ section.settings.font_family.fallback_families }}, sans-serif !important;
-  font-weight: {{ section.settings.font_family.weight | default: 700 }};
-  font-style: {{ section.settings.font_family.style | default: 'normal' }};
+  font-weight: {{ section.settings.font_family.weight | default: 700 }} !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-.noticebar-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  max-width: 1200px;
-  margin: 0 auto;
+/* Inner layout: text + countdown with good spacing */
+#noticebar-{{ section.id }} .noticebar-content {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 40px !important;
+  width: 100% !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
 }
 
-.notice-text {
-  white-space: nowrap;
-  font-weight: 700;
+/* Header text (left) - White text */
+#noticebar-{{ section.id }} .notice-text {
+  white-space: nowrap !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+  color: #ffffff !important;
+  font-size: 1.2em !important;
+  letter-spacing: 1px !important;
 }
 
-.countdown-timer {
-  display: flex;
-  gap: 8px;
-  font-size: 1.1em;
+/* Countdown container (right) */
+#noticebar-{{ section.id }} .countdown-timer {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
 }
 
-.time-unit {
-  background: rgba(255,255,255,0.2);
-  padding: 8px 12px;
-  border-radius: 8px;
-  min-width: 50px;
-  text-align: center;
-  font-family: {{ section.settings.font_family.family }}, {{ section.settings.font_family.fallback_families }}, sans-serif !important;
-  font-weight: {{ section.settings.font_family.weight | default: 700 }};
+/* Individual time box - Large digital style like image */
+#noticebar-{{ section.id }} .time-unit {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+  padding: 12px 16px !important;
+  border-radius: 12px !important;
+  min-width: 85px !important;
+  height: 85px !important;
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font-family: 'Courier New', monospace, sans-serif !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+  position: relative !important;
 }
 
-.time-label {
-  font-size: 0.75em;
-  opacity: 0.9;
-  margin-top: 2px;
+#noticebar-{{ section.id }} .time-unit::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  border-radius: 14px;
+  z-index: -1;
 }
 
-.noticebar-hidden {
+/* Number display - Large bold like image */
+#noticebar-{{ section.id }} .time-unit > div:first-child {
+  font-size: 2.2em !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5) !important;
+  margin-bottom: 2px !important;
+}
+
+/* Label - Smaller below numbers */
+#noticebar-{{ section.id }} .time-label {
+  font-size: 0.65em !important;
+  opacity: 0.85 !important;
+  font-weight: 600 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+}
+
+/* Hide when expired */
+#noticebar-{{ section.id }}.noticebar-hidden {
   display: none !important;
 }
+
+/* Mobile responsive */
+@media (max-width: 749px) {
+  #noticebar-{{ section.id }} .noticebar-content {
+    flex-direction: column !important;
+    gap: 24px !important;
+    text-align: center !important;
+  }
+
+  #noticebar-{{ section.id }} .notice-text {
+    white-space: normal !important;
+    font-size: 1.1em !important;
+  }
+
+  #noticebar-{{ section.id }} .countdown-timer {
+    gap: 10px !important;
+  }
+
+  #noticebar-{{ section.id }} .time-unit {
+    min-width: 70px !important;
+    height: 70px !important;
+    padding: 10px 12px !important;
+  }
+
+  #noticebar-{{ section.id }} .time-unit > div:first-child {
+    font-size: 1.8em !important;
+  }
+}
+
+/* Animation for number changes */
+@keyframes glow {
+  0% { box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+  50% { box-shadow: 0 0 30px rgba(255,255,255,0.6); }
+  100% { box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+}
+
+#noticebar-{{ section.id }} .time-unit.changing {
+  animation: glow 0.6s ease-in-out !important;
+}
+
 </style>
 
-<div class="noticebar-countdown" id="noticebar-{{ section.id }}">
-  <div class="noticebar-content">
-    <span class="notice-text">{{ section.settings.text }}</span>
-    <div class="countdown-timer" id="countdown-{{ section.id }}"></div>
+<div id="noticebar-wrapper-{{ section.id }}">
+  <div class="noticebar-countdown" id="noticebar-{{ section.id }}">
+    
+      <!-- THIS should show your “🔥 Sale Ends In” text -->
+      <span class="notice-text">
+        {{ block.settings.text }}
+      </span>
+
+      <div class="countdown-timer" id="countdown-{{ section.id }}"></div>
+    </div>
   </div>
 </div>
 
@@ -131,41 +229,41 @@
   const timer = document.getElementById('countdown-' + sectionId);
   if (!bar || !timer) return;
 
-  // 1) Start date = TODAY
-  const startDate = new Date();
-  startDate.setHours(0, 0, 0, 0); // today at midnight
-
-  // 2) End date = setting OR 15 days from today
-  const endDateInput = '{{ section.settings.end_date | strip }}';
+  const now = new Date();
+  const rawInput = '{{ block.settings.end_date | strip }}'.trim();
   let endDate;
 
-  if (endDateInput) {
-    // Try DD/MM/YYYY
-    let m = endDateInput.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
-    if (m) {
-      const day = parseInt(m[1], 10);
-      const month = parseInt(m[2], 10) - 1;
-      const year = parseInt(m[3], 10);
-      endDate = new Date(year, month, day, 23, 59, 59);
-    } else {
-      // Try YYYY-MM-DD or let JS parse
-      endDate = new Date(endDateInput);
-      if (!isNaN(endDate.getTime())) {
-        endDate.setHours(23, 59, 59, 999);
+  // Parse only if merchant actually entered something
+  if (rawInput) {
+    // Try ISO: YYYY-MM-DD
+    endDate = new Date(rawInput);
+
+    // If that fails, try DD/MM/YYYY or DD-MM-YYYY
+    if (isNaN(endDate.getTime())) {
+      const m = rawInput.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+      if (m) {
+        const day = parseInt(m[1], 10);
+        const month = parseInt(m[2], 10) - 1;
+        const year = parseInt(m[3], 10);
+        endDate = new Date(year, month, day, 23, 59, 59);
       }
+    }
+
+    if (!isNaN(endDate.getTime())) {
+      endDate.setHours(23, 59, 59, 999);
     }
   }
 
-  // Fallback if no valid end date provided
+  // Fallback: if empty or invalid ⇒ 15 days from today
   if (!endDate || isNaN(endDate.getTime())) {
-    endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 15);
+    endDate = new Date(now);
+    endDate.setDate(now.getDate() + 15);
     endDate.setHours(23, 59, 59, 999);
   }
 
   function updateTimer() {
-    const now = new Date();
-    const diff = endDate - now;
+    const current = new Date();
+    const diff = endDate - current;
 
     if (diff <= 0) {
       bar.classList.add('noticebar-hidden');
@@ -178,10 +276,22 @@
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
     timer.innerHTML = `
-      <div class="time-unit"><div>${days.toString().padStart(2,'0')}</div><div class="time-label">Days</div></div>
-      <div class="time-unit"><div>${hours.toString().padStart(2,'0')}</div><div class="time-label">Hrs</div></div>
-      <div class="time-unit"><div>${minutes.toString().padStart(2,'0')}</div><div class="time-label">Mins</div></div>
-      <div class="time-unit"><div>${seconds.toString().padStart(2,'0')}</div><div class="time-label">Secs</div></div>
+      <div class="time-unit">
+        <div>${days.toString().padStart(2, '0')}</div>
+        <div class="time-label">Days</div>
+      </div>
+      <div class="time-unit">
+        <div>${hours.toString().padStart(2, '0')}</div>
+        <div class="time-label">Hrs</div>
+      </div>
+      <div class="time-unit">
+        <div>${minutes.toString().padStart(2, '0')}</div>
+        <div class="time-label">Mins</div>
+      </div>
+      <div class="time-unit">
+        <div>${seconds.toString().padStart(2, '0')}</div>
+        <div class="time-label">Secs</div>
+      </div>
     `;
   }
 
