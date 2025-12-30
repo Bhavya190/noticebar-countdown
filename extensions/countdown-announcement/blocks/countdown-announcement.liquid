@@ -1,0 +1,191 @@
+{% schema %}
+{
+  "name": "Countdown Announcement",
+  "target": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Header Text",
+      "default": "🔥 Sale Ends In"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "Offer End Date",
+      "info": "Optional. Enter date (01/01/2026 or 2026-01-01). Leave blank = 15 days from today.",
+      "default": "2026-01-01"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#dc2626"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 12,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 20
+    },
+    {
+      "type": "font_picker",
+      "id": "font_family",
+      "label": "Font Family",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding",
+      "default": 12
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+{%- if section.settings.font_family -%}
+  {{ section.settings.font_family | font_face: font_display: 'swap' }}
+{%- endif -%}
+
+.noticebar-countdown {
+  background: {{ section.settings.bg_color }};
+  color: {{ section.settings.text_color }};
+  padding: {{ section.settings.padding }}px 20px;
+  text-align: center;
+  font-size: {{ section.settings.font_size }}px !important;
+  font-family: {{ section.settings.font_family.family }}, {{ section.settings.font_family.fallback_families }}, sans-serif !important;
+  font-weight: {{ section.settings.font_family.weight | default: 700 }};
+  font-style: {{ section.settings.font_family.style | default: 'normal' }};
+}
+
+.noticebar-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.notice-text {
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.countdown-timer {
+  display: flex;
+  gap: 8px;
+  font-size: 1.1em;
+}
+
+.time-unit {
+  background: rgba(255,255,255,0.2);
+  padding: 8px 12px;
+  border-radius: 8px;
+  min-width: 50px;
+  text-align: center;
+  font-family: {{ section.settings.font_family.family }}, {{ section.settings.font_family.fallback_families }}, sans-serif !important;
+  font-weight: {{ section.settings.font_family.weight | default: 700 }};
+}
+
+.time-label {
+  font-size: 0.75em;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+
+.noticebar-hidden {
+  display: none !important;
+}
+</style>
+
+<div class="noticebar-countdown" id="noticebar-{{ section.id }}">
+  <div class="noticebar-content">
+    <span class="notice-text">{{ section.settings.text }}</span>
+    <div class="countdown-timer" id="countdown-{{ section.id }}"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  const sectionId = '{{ section.id }}';
+  const bar = document.getElementById('noticebar-' + sectionId);
+  const timer = document.getElementById('countdown-' + sectionId);
+  if (!bar || !timer) return;
+
+  // 1) Start date = TODAY
+  const startDate = new Date();
+  startDate.setHours(0, 0, 0, 0); // today at midnight
+
+  // 2) End date = setting OR 15 days from today
+  const endDateInput = '{{ section.settings.end_date | strip }}';
+  let endDate;
+
+  if (endDateInput) {
+    // Try DD/MM/YYYY
+    let m = endDateInput.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+    if (m) {
+      const day = parseInt(m[1], 10);
+      const month = parseInt(m[2], 10) - 1;
+      const year = parseInt(m[3], 10);
+      endDate = new Date(year, month, day, 23, 59, 59);
+    } else {
+      // Try YYYY-MM-DD or let JS parse
+      endDate = new Date(endDateInput);
+      if (!isNaN(endDate.getTime())) {
+        endDate.setHours(23, 59, 59, 999);
+      }
+    }
+  }
+
+  // Fallback if no valid end date provided
+  if (!endDate || isNaN(endDate.getTime())) {
+    endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + 15);
+    endDate.setHours(23, 59, 59, 999);
+  }
+
+  function updateTimer() {
+    const now = new Date();
+    const diff = endDate - now;
+
+    if (diff <= 0) {
+      bar.classList.add('noticebar-hidden');
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    timer.innerHTML = `
+      <div class="time-unit"><div>${days.toString().padStart(2,'0')}</div><div class="time-label">Days</div></div>
+      <div class="time-unit"><div>${hours.toString().padStart(2,'0')}</div><div class="time-label">Hrs</div></div>
+      <div class="time-unit"><div>${minutes.toString().padStart(2,'0')}</div><div class="time-label">Mins</div></div>
+      <div class="time-unit"><div>${seconds.toString().padStart(2,'0')}</div><div class="time-label">Secs</div></div>
+    `;
+  }
+
+  updateTimer();
+  setInterval(updateTimer, 1000);
+})();
+</script>

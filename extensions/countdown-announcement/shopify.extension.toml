@@ -1,0 +1,7 @@
+name = "countdown-announcement"
+type = "theme"
+uid = "664303a0-55b8-59de-3856-366750951029bedfb860"
+
+[[blocks]]
+type = "countdown-announcement"
+settings = []
