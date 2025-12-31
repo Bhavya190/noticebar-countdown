@@ -10,39 +10,62 @@
       "default": "🔥 Sale Ends In"
     },
     {
-      "type": "checkbox",
-      "id": "show_countdown",
-      "label": "Show Countdown Timer",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "end_date",
-      "label": "Offer End Date",
-      "info": "Enter YYYY-MM-DD (2026-01-01) or DD/MM/YYYY (01/01/2026). Leave blank = 15 days from today.",
-      "default": "2026-01-01"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background Color",
-      "default": "#dc2626"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text Color",
-      "default": "#ffffff"
-    },
-    {
       "type": "range",
       "id": "font_size",
       "min": 12,
       "max": 48,
       "step": 1,
       "unit": "px",
-      "label": "Font Size",
+      "label": "Bar Font Size",
       "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "show_countdown",
+      "label": "Show Countdown Timer",
+      "default": true,
+      "info": "Enable to show countdown timer settings below"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "Offer End Date",
+      "info": "Enter YYYY-MM-DD (2026-01-01) or DD/MM/YYYY (01/01/2026)",
+      "default": "2026-01-01"
+    },
+    {
+      "type": "range",
+      "id": "countdown_font_size",
+      "min": 12,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Countdown Font Size",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "countdown_color",
+      "label": "Countdown Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "countdown_bg_color",
+      "label": "Countdown Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Bar Background Color",
+      "default": "#dcfefe"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Bar Text Color",
+      "default": "#000000"
     },
     {
       "type": "font_picker",
@@ -64,10 +87,22 @@
 }
 {% endschema %}
 
+
+
 <style>
 {%- if section.settings.font_family -%}
   {{ block.settings.font_family | font_face: font_display: 'swap' }}
 {%- endif -%}
+
+/* Hide countdown settings when checkbox is OFF */
+{% unless block.settings.show_countdown %}
+  #shopify-section-{{ section.id }} .shopify-section__settings [data-setting-id="end_date"],
+  #shopify-section-{{ section.id }} .shopify-section__settings [data-setting-id="countdown_font_size"],
+  #shopify-section-{{ section.id }} .shopify-section__settings [data-setting-id="countdown_color"],
+  #shopify-section-{{ section.id }} .shopify-section__settings [data-setting-id="countdown_bg_color"] {
+    display: none !important;
+  }
+{% endunless %}
 
 /* Wrapper */
 #noticebar-wrapper-{{ section.id }} {
@@ -79,7 +114,7 @@
   background: {{ block.settings.bg_color }} !important;
   color: {{ block.settings.text_color }} !important;
   padding: {{ block.settings.padding }}px 20px !important;
-  font-size: {{ block.settings.font_size }}px !important;
+  font-size: {{ block.settings.font_size }}px !important;  /* BAR FONT SIZE */
   font-family: {{ block.settings.font_family.family }}, {{ block.settings.font_family.fallback_families }}, sans-serif !important;
   font-weight: {{ block.settings.font_family.weight | default: 700 }} !important;
   box-sizing: border-box !important;
@@ -94,7 +129,7 @@
   text-align: center !important;
 }
 
-/* Inner layout: text + countdown with good spacing */
+/* Inner layout */
 #noticebar-{{ section.id }} .noticebar-content {
   display: flex !important;
   align-items: center !important;
@@ -105,32 +140,32 @@
   margin: 0 auto !important;
 }
 
-/* Header text (left/center) - White text */
+/* Header text */
 #noticebar-{{ section.id }} .notice-text {
   white-space: nowrap !important;
   font-weight: 700 !important;
   margin: 0 !important;
   color: {{ block.settings.text_color }} !important;
-  font-size: 1.2em !important;
+  font-size: {{ block.settings.font_size }} !important;
   letter-spacing: 1px !important;
 }
 
-/* Countdown container (right) */
+/* Countdown container */
 #noticebar-{{ section.id }} .countdown-timer {
   display: flex !important;
   align-items: center !important;
   gap: 12px !important;
 }
 
-/* Individual time box - Large digital style */
+/* TIME UNIT – uses countdown_* settings */
 #noticebar-{{ section.id }} .time-unit {
-  background: rgba(255, 255, 255, 0.1) !important;
+  background: {{ block.settings.countdown_bg_color }} !important;
   backdrop-filter: blur(10px) !important;
-  border: 2px solid rgba(255, 255, 255, 0.2) !important;
-  padding: 12px 16px !important;
+  border: 2px solid rgba(0, 0, 0, 0.1) !important;
+  padding: {{ block.settings.countdown_font_size | times: 0.4 }}px {{ block.settings.countdown_font_size | times: 0.7 }}px !important;
   border-radius: 12px !important;
-  min-width: 85px !important;
-  min-height: 35px !important;
+  min-width: {{ block.settings.countdown_font_size | times: 2.6 }}px !important;
+  min-height: {{ block.settings.countdown_font_size | times: 2.6 }}px !important;
   text-align: center !important;
   display: flex !important;
   flex-direction: column !important;
@@ -138,11 +173,12 @@
   align-items: center !important;
   font-family: 'Courier New', monospace, sans-serif !important;
   font-weight: 800 !important;
-  color: {{ block.settings.text_color }} !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+  color: {{ block.settings.countdown_color }} !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
   position: relative !important;
 }
 
+/* Glow frame */
 #noticebar-{{ section.id }} .time-unit::before {
   content: '';
   position: absolute;
@@ -150,23 +186,23 @@
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  background: linear-gradient(45deg, rgba(255,255,255,0.2), rgba(0,0,0,0.05));
   border-radius: 14px;
   z-index: -1;
 }
 
-/* Number display - Large bold */
+/* NUMBER – now tied to countdown_font_size */
 #noticebar-{{ section.id }} .time-unit > div:first-child {
-  font-size: 2.2em !important;
+  font-size: {{ block.settings.countdown_font_size }}px !important;  /* KEY LINE */
   line-height: 1 !important;
   font-weight: 900 !important;
   text-shadow: 0 2px 10px rgba(0,0,0,0.5) !important;
   margin-bottom: 2px !important;
 }
 
-/* Label - Smaller below numbers */
+/* Label */
 #noticebar-{{ section.id }} .time-label {
-  font-size: 0.65em !important;
+  font-size: 0.66em !important;
   opacity: 0.85 !important;
   font-weight: 600 !important;
   letter-spacing: 1px !important;
@@ -178,11 +214,11 @@
   display: none !important;
 }
 
-/* Mobile responsive */
+/* Mobile */
 @media (max-width: 749px) {
   #noticebar-{{ section.id }} .noticebar-content {
     flex-direction: column !important;
-    gap: 24px !important;
+    gap: 16px !important;
     text-align: center !important;
   }
 
@@ -191,26 +227,17 @@
     font-size: 1.1em !important;
   }
 
-  #noticebar-{{ section.id }} .countdown-timer {
-    gap: 10px !important;
-  }
-
   #noticebar-{{ section.id }} .time-unit {
-    min-width: 70px !important;
-    height: 70px !important;
-    padding: 10px 12px !important;
-  }
-
-  #noticebar-{{ section.id }} .time-unit > div:first-child {
-    font-size: 1.8em !important;
+    min-width: {{ block.settings.countdown_font_size | times: 2.0 }}px !important;
+    min-height: {{ block.settings.countdown_font_size | times: 2.0 }}px !important;
   }
 }
 
-/* Animation for number changes */
+/* Animation */
 @keyframes glow {
-  0% { box-shadow: 0 0 20px rgba(255,255,255,0.3); }
-  50% { box-shadow: 0 0 30px rgba(255,255,255,0.6); }
-  100% { box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+  0% { box-shadow: 0 0 10px rgba(0,0,0,0.15); }
+  50% { box-shadow: 0 0 18px rgba(0,0,0,0.35); }
+  100% { box-shadow: 0 0 10px rgba(0,0,0,0.15); }
 }
 
 #noticebar-{{ section.id }} .time-unit.changing {
@@ -219,18 +246,18 @@
 </style>
 
 
+
 <div id="noticebar-wrapper-{{ section.id }}">
   <div class="noticebar-countdown" id="noticebar-{{ section.id }}">
     
     <!-- Header text - ALWAYS shows -->
     <span class="notice-text">
-      {{ block.settings.text }}
-    </span>
+  {{ block.settings.text }}
+</span>
 
-    <!-- Countdown timer - ONLY shows if enabled -->
-    {% if block.settings.show_countdown %}
-      <div class="countdown-timer" id="countdown-{{ section.id }}"></div>
-    {% endif %}
+{% if block.settings.show_countdown %}
+  <div class="countdown-timer" id="countdown-{{ section.id }}"></div>
+{% endif %}
     
   </div>
 </div>
