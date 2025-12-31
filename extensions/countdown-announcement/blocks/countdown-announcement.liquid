@@ -10,6 +10,12 @@
       "default": "🔥 Sale Ends In"
     },
     {
+      "type": "checkbox",
+      "id": "show_countdown",
+      "label": "Show Countdown Timer",
+      "default": true
+    },
+    {
       "type": "text",
       "id": "end_date",
       "label": "Offer End Date",
@@ -68,7 +74,7 @@
   width: 100%;
 }
 
-/* Main bar - Black background like the image */
+/* Main bar */
 #noticebar-{{ section.id }} {
   background: {{ block.settings.bg_color }} !important;
   color: {{ block.settings.text_color }} !important;
@@ -82,6 +88,12 @@
   justify-content: space-between !important;
 }
 
+/* When NO countdown - center the text */
+#noticebar-{{ section.id }}:not(:has(.countdown-timer)) {
+  justify-content: center !important;
+  text-align: center !important;
+}
+
 /* Inner layout: text + countdown with good spacing */
 #noticebar-{{ section.id }} .noticebar-content {
   display: flex !important;
@@ -93,7 +105,7 @@
   margin: 0 auto !important;
 }
 
-/* Header text (left) - White text */
+/* Header text (left/center) - White text */
 #noticebar-{{ section.id }} .notice-text {
   white-space: nowrap !important;
   font-weight: 700 !important;
@@ -110,7 +122,7 @@
   gap: 12px !important;
 }
 
-/* Individual time box - Large digital style like image */
+/* Individual time box - Large digital style */
 #noticebar-{{ section.id }} .time-unit {
   background: rgba(255, 255, 255, 0.1) !important;
   backdrop-filter: blur(10px) !important;
@@ -118,7 +130,7 @@
   padding: 12px 16px !important;
   border-radius: 12px !important;
   min-width: 85px !important;
-  height: 85px !important;
+  min-height: 35px !important;
   text-align: center !important;
   display: flex !important;
   flex-direction: column !important;
@@ -143,7 +155,7 @@
   z-index: -1;
 }
 
-/* Number display - Large bold like image */
+/* Number display - Large bold */
 #noticebar-{{ section.id }} .time-unit > div:first-child {
   font-size: 2.2em !important;
   line-height: 1 !important;
@@ -204,21 +216,25 @@
 #noticebar-{{ section.id }} .time-unit.changing {
   animation: glow 0.6s ease-in-out !important;
 }
-
 </style>
+
 
 <div id="noticebar-wrapper-{{ section.id }}">
   <div class="noticebar-countdown" id="noticebar-{{ section.id }}">
     
-      <!-- THIS should show your “🔥 Sale Ends In” text -->
-      <span class="notice-text">
-        {{ block.settings.text }}
-      </span>
+    <!-- Header text - ALWAYS shows -->
+    <span class="notice-text">
+      {{ block.settings.text }}
+    </span>
 
+    <!-- Countdown timer - ONLY shows if enabled -->
+    {% if block.settings.show_countdown %}
       <div class="countdown-timer" id="countdown-{{ section.id }}"></div>
-    </div>
+    {% endif %}
+    
   </div>
 </div>
+
 
 <script>
 (function() {
@@ -227,7 +243,11 @@
   const sectionId = '{{ section.id }}';
   const bar = document.getElementById('noticebar-' + sectionId);
   const timer = document.getElementById('countdown-' + sectionId);
-  if (!bar || !timer) return;
+  
+  // If countdown is disabled or elements don't exist, exit early
+  if (!timer || !{{ block.settings.show_countdown | json }}) {
+    return;
+  }
 
   const now = new Date();
   const rawInput = '{{ block.settings.end_date | strip }}'.trim();
