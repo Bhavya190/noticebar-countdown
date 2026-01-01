@@ -154,18 +154,18 @@
 #noticebar-{{ section.id }} .countdown-timer {
   display: flex !important;
   align-items: center !important;
-  gap: 12px !important;
+  gap: 6px !important;
 }
 
 /* TIME UNIT – uses countdown_* settings */
 #noticebar-{{ section.id }} .time-unit {
   background: {{ block.settings.countdown_bg_color }} !important;
   backdrop-filter: blur(10px) !important;
-  border: 2px solid rgba(0, 0, 0, 0.1) !important;
-  padding: {{ block.settings.countdown_font_size | times: 0.4 }}px {{ block.settings.countdown_font_size | times: 0.7 }}px !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  padding: {{ block.settings.countdown_font_size | times: 0.25 }}px {{ block.settings.countdown_font_size | times: 0.45 }}px !important;
   border-radius: 12px !important;
-  min-width: {{ block.settings.countdown_font_size | times: 2.6 }}px !important;
-  min-height: {{ block.settings.countdown_font_size | times: 2.6 }}px !important;
+  min-width: {{ block.settings.countdown_font_size | times: 2.0 }}px !important;
+  min-height: {{ block.settings.countdown_font_size | times: 2.0 }}px !important;
   text-align: center !important;
   display: flex !important;
   flex-direction: column !important;
@@ -174,7 +174,7 @@
   font-family: 'Courier New', monospace, sans-serif !important;
   font-weight: 800 !important;
   color: {{ block.settings.countdown_color }} !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2) !important;
   position: relative !important;
 }
 
@@ -202,7 +202,7 @@
 
 /* Label */
 #noticebar-{{ section.id }} .time-label {
-  font-size: 0.66em !important;
+  font-size: {{ block.settings.countdown_font_size | times: 0.7 }}px !important;
   opacity: 0.85 !important;
   font-weight: 600 !important;
   letter-spacing: 1px !important;
@@ -218,7 +218,7 @@
 @media (max-width: 749px) {
   #noticebar-{{ section.id }} .noticebar-content {
     flex-direction: column !important;
-    gap: 16px !important;
+    gap: 10px !important;
     text-align: center !important;
   }
 
@@ -228,8 +228,9 @@
   }
 
   #noticebar-{{ section.id }} .time-unit {
-    min-width: {{ block.settings.countdown_font_size | times: 2.0 }}px !important;
-    min-height: {{ block.settings.countdown_font_size | times: 2.0 }}px !important;
+    min-width: {{ block.settings.countdown_font_size | times: 1.7 }}px !important;
+    min-height: {{ block.settings.countdown_font_size | times: 1.7 }}px !important;
+    padding: {{ block.settings.countdown_font_size | times: 0.2 }}px {{ block.settings.countdown_font_size | times: 0.35 }}px !important;
   }
 }
 
@@ -325,19 +326,19 @@
     timer.innerHTML = `
       <div class="time-unit">
         <div>${days.toString().padStart(2, '0')}</div>
-        <div class="time-label">Days</div>
+        <div class="time-label">DD</div>
       </div>
       <div class="time-unit">
         <div>${hours.toString().padStart(2, '0')}</div>
-        <div class="time-label">Hrs</div>
+        <div class="time-label">HH</div>
       </div>
       <div class="time-unit">
         <div>${minutes.toString().padStart(2, '0')}</div>
-        <div class="time-label">Mins</div>
+        <div class="time-label">MM</div>
       </div>
       <div class="time-unit">
         <div>${seconds.toString().padStart(2, '0')}</div>
-        <div class="time-label">Secs</div>
+        <div class="time-label">SS</div>
       </div>
     `;
   }
