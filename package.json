@@ -12,9 +12,8 @@
 
     "start": "react-router-serve ./build/server/index.js",
 
-    "setup": "prisma generate && prisma migrate deploy",
+    "setup": "prisma generate",
     "migrate:deploy": "prisma migrate deploy",
-
     "docker-start": "npm run setup && npm run start",
 
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
