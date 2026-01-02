@@ -17,6 +17,7 @@ if (
 
 const host = new URL(process.env.SHOPIFY_APP_URL || "http://localhost")
   .hostname;
+
 let hmrConfig;
 
 if (host === "localhost") {
@@ -30,13 +31,14 @@ if (host === "localhost") {
   hmrConfig = {
     protocol: "wss",
     host: host,
-    port: parseInt(process.env.FRONTEND_PORT) || 8002,
+    port: parseInt(process.env.FRONTEND_PORT || "8002"),
     clientPort: 443,
   };
 }
 
 export default defineConfig({
   server: {
+    host: "0.0.0.0",                 // <- important for Render
     allowedHosts: [host],
     cors: {
       preflightContinue: true,
