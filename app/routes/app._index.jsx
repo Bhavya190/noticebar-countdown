@@ -9,21 +9,27 @@ import {
   Badge,
   Divider,
 } from "@shopify/polaris";
-import styles from "./app._index.module.css";
+
+import stylesHref from "./app._index.css";
+
+/** @type {LinksFunction} */
+export const links = () => [
+  { rel: "stylesheet", href: stylesHref },
+];
 
 export default function AppIndex() {
   return (
-    <div className={styles.appShell}>
+    <div className="appShell">
       <Page
         title="Countdown Announcement Bar"
         subtitle="Create a high‑converting, customizable countdown bar to highlight your offers"
       >
-        <div className={styles.pageBackground}>
+        <div className="pageBackground">
           <Layout>
             {/* Overview / Value section */}
             <Layout.Section>
               <Card>
-                <div className={styles.heroCard}>
+                <div className="heroCard">
                   <BlockStack gap="400">
                     <BlockStack gap="200">
                       <Text as="h2" variant="headingLg">
@@ -40,7 +46,7 @@ export default function AppIndex() {
                       gap="400"
                       wrap
                       align="start"
-                      className={styles.featureGrid}
+                      className="featureGrid"
                     >
                       <BlockStack gap="100" maxInlineSize="260px">
                         <Text as="h3" variant="headingSm">
@@ -80,13 +86,13 @@ export default function AppIndex() {
             {/* How to set up section */}
             <Layout.Section>
               <Card title="How to set up the countdown bar" sectioned>
-                <BlockStack gap="300" className={styles.cardBody}>
+                <BlockStack gap="300" className="cardBody">
                   <Text as="p" variant="bodyMd">
                     Follow these steps in your Online Store theme editor to add the
                     countdown announcement bar to your storefront.
                   </Text>
 
-                  <div className={styles.orderedListWrapper}>
+                  <div className="orderedListWrapper">
                     <List type="number">
                       <List.Item>
                         Go to{" "}
@@ -133,14 +139,14 @@ export default function AppIndex() {
             {/* Settings explanation section */}
             <Layout.Section>
               <Card title="Explanation of key settings" sectioned>
-                <BlockStack gap="300" className={styles.cardBody}>
+                <BlockStack gap="300" className="cardBody">
                   <Text as="p" variant="bodyMd">
                     These are the main options you will see for the Countdown Announcement
                     block in the theme editor.
                   </Text>
 
                   <BlockStack gap="200">
-                    <BlockStack gap="100" className={styles.settingRow}>
+                    <BlockStack gap="100" className="settingRow">
                       <InlineStack gap="200" align="center">
                         <Text as="h3" variant="headingSm">
                           Header Text
@@ -155,7 +161,7 @@ export default function AppIndex() {
 
                     <Divider />
 
-                    <BlockStack gap="100" className={styles.settingRow}>
+                    <BlockStack gap="100" className="settingRow">
                       <Text as="h3" variant="headingSm">
                         Offer End Date
                       </Text>
@@ -168,7 +174,7 @@ export default function AppIndex() {
 
                     <Divider />
 
-                    <BlockStack gap="100" className={styles.settingRow}>
+                    <BlockStack gap="100" className="settingRow">
                       <Text as="h3" variant="headingSm">
                         Show Countdown Timer
                       </Text>
@@ -180,7 +186,7 @@ export default function AppIndex() {
 
                     <Divider />
 
-                    <BlockStack gap="100" className={styles.settingRow}>
+                    <BlockStack gap="100" className="settingRow">
                       <Text as="h3" variant="headingSm">
                         Styling controls
                       </Text>
@@ -198,7 +204,7 @@ export default function AppIndex() {
             {/* Tips section */}
             <Layout.Section>
               <Card title="Best practices for higher conversions" sectioned>
-                <div className={styles.cardBody}>
+                <div className="cardBody">
                   <List>
                     <List.Item>
                       Use short, clear messages like “Sale ends in” or “Offer expires
