@@ -12,7 +12,7 @@
 
     "start": "react-router-serve ./build/server/index.js",
 
-    "setup": "prisma generate",
+    "setup": "prisma generate && prisma migrate deploy",
     "migrate:deploy": "prisma migrate deploy",
 
     "docker-start": "npm run setup && npm run start",
