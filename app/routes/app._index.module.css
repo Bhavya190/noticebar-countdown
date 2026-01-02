@@ -1,0 +1,117 @@
+/* Full-page shell */
+.appShell {
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #020617 0, #020617 40%, #0b1120 100%);
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+/* Soft glassmorphism behind cards */
+.pageBackground {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px;
+  border-radius: 24px;
+  background: linear-gradient(
+      135deg,
+      rgba(148, 163, 184, 0.08),
+      rgba(30, 64, 175, 0.24)
+    );
+  box-shadow:
+    0 26px 80px rgba(15, 23, 42, 0.9),
+    0 0 0 1px rgba(148, 163, 184, 0.2);
+  -webkit-backdrop-filter: blur(26px); /* Safari / iOS support */
+  backdrop-filter: blur(26px);         /* modern browsers */
+}
+
+/* First card “hero” */
+.heroCard {
+  padding: 24px;
+  border-radius: 18px;
+  background: radial-gradient(circle at top left, #4f46e5 0, #1d4ed8 40%, #0f172a 100%);
+  color: #e5e7eb;
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.9);
+}
+
+/* Three-column feature layout */
+.featureGrid {
+  margin-top: 8px;
+}
+
+.featureGrid > * {
+  padding: 12px 0;
+}
+
+/* Shared card body */
+.cardBody {
+  padding-top: 4px;
+}
+
+/* Settings rows */
+.settingRow {
+  padding-block: 4px;
+}
+
+/* Numbered list styling */
+.orderedListWrapper ol {
+  counter-reset: step-counter;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.orderedListWrapper li {
+  list-style: none;
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 10px;
+}
+
+.orderedListWrapper li::before {
+  counter-increment: step-counter;
+  content: counter(step-counter);
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #4f46e5, #22c55e);
+  color: #f9fafb;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive tweaks */
+@media (max-width: 960px) {
+  .appShell {
+    padding: 12px;
+  }
+
+  .pageBackground {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .heroCard {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 640px) {
+  .pageBackground {
+    padding: 12px;
+  }
+
+  .orderedListWrapper li {
+    padding-left: 34px;
+  }
+
+  .orderedListWrapper li::before {
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+  }
+}

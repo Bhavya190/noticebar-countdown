@@ -2,7 +2,7 @@
 
 client_id = "7acf436c6fdfa7fa395085950a771c8d"
 name = "noticebar-countdown"
-application_url = "https://strike-families-detective-explains.trycloudflare.com"
+application_url = "https://noticebar-countdown-hkrn.onrender.com/app"
 embedded = true
 
 [build]
@@ -17,5 +17,7 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://strike-families-detective-explains.trycloudflare.com/api/auth"
+  "https://noticebar-countdown-hkrn.onrender.com/api/auth/callback",
+  "https://noticebar-countdown-hkrn.onrender.com/api/auth",
+  "https://noticebar-countdown-hkrn.onrender.com/auth/callback"
 ]
