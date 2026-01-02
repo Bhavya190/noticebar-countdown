@@ -1,13 +1,12 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "34379e752be585c7dadda29bd4e05fcb"
+client_id = "7acf436c6fdfa7fa395085950a771c8d"
 name = "noticebar-countdown"
-application_url = "https://example.com"
+application_url = "https://strike-families-detective-explains.trycloudflare.com"
 embedded = true
 
 [build]
-automatically_update_urls_on_dev = true
-include_config_on_deploy = true
+automatically_update_urls_on_dev = false
 
 [webhooks]
 api_version = "2026-01"
@@ -17,4 +16,6 @@ api_version = "2026-01"
 scopes = "write_products"
 
 [auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+redirect_urls = [
+  "https://strike-families-detective-explains.trycloudflare.com/api/auth"
+]
