@@ -1,12 +1,5 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import tailwindStyles from '~/styles/tailwind.css'; // ← Your new line
-
-// Add this if not present:
-export function links() {
-  return [
-    { rel: 'stylesheet', href: tailwindStyles },
-  ];
-}
+import { Outlet, Scripts } from "react-router";
+import "./styles/tailwind.css"; // just import for side-effect, no variable
 
 export default function App() {
   return (
@@ -14,12 +7,10 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <Meta />
-        <Links />
+        <title>Noticebar Countdown</title>
       </head>
       <body>
         <Outlet />
-        <ScrollRestoration />
         <Scripts />
       </body>
     </html>

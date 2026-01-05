@@ -8,12 +8,6 @@ import {
   InlineStack,
   Badge,
 } from "@shopify/polaris";
-import stylesHref from "./app._index.css?url";
-
-/* Route-scoped CSS (you can keep this if you have extra custom styles) */
-export const links = () => [
-  { rel: "stylesheet", href: stylesHref },
-];
 
 export default function AppIndex() {
   return (

@@ -45,6 +45,7 @@
     "@shopify/api-codegen-preset": "^1.2.0",
     "@shopify/polaris-types": "^1.0.1",
     "@tailwindcss/cli": "^4.1.18",
+    "@tailwindcss/postcss": "^4.1.18",
     "@types/eslint": "^9.6.1",
     "@types/node": "^22.18.8",
     "@types/react": "^18.3.25",
