@@ -10,7 +10,7 @@ RUN npm ci
 COPY prisma ./prisma
 
 # Set a dummy DATABASE_URL for build
-ENV DATABASE_URL=postgresql://dummy:password@dummy:5432/dummy
+ENV DATABASE_URL=postgresql://prisma_db_kpk7_user:JPuDF4QVsBRa3C3wW5olTJcCVph1Lqsp@dpg-d5bpnbfgi27c7390humg-a.virginia-postgres.render.com:5432/prisma_db_kpk7?sslmode=require
 
 # Generate Prisma client
 RUN npx prisma generate
