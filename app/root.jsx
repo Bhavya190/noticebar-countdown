@@ -1,17 +1,27 @@
-// app/root.jsx
-import { Outlet } from "react-router";
-import {
-  AppProvider,
-  Frame,
-} from "@shopify/polaris";
-import enTranslations from "@shopify/polaris/locales/en.json";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+import tailwindStyles from '~/styles/tailwind.css'; // ← Your new line
 
-export default function Root() {
+// Add this if not present:
+export function links() {
+  return [
+    { rel: 'stylesheet', href: tailwindStyles },
+  ];
+}
+
+export default function App() {
   return (
-    <AppProvider i18n={enTranslations}>
-      <Frame>
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
         <Outlet />
-      </Frame>
-    </AppProvider>
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
   );
 }
