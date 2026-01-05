@@ -9,6 +9,12 @@ RUN npm ci
 # Copy Prisma files
 COPY prisma ./prisma
 
+# Set a dummy DATABASE_URL for build
+ENV DATABASE_URL=postgresql://dummy:password@dummy:5432/dummy
+
+# Generate Prisma client
+RUN npx prisma generate
+
 # Copy the rest of the application
 COPY . .
 
@@ -18,6 +24,9 @@ RUN npm run build
 # Production image
 FROM node:20-alpine
 WORKDIR /app
+
+# Install system dependencies for Prisma
+RUN apk add --no-cache openssl
 
 # Copy package files and install only production dependencies
 COPY package.json package-lock.json* ./
@@ -30,10 +39,17 @@ COPY --from=builder /app/prisma ./prisma
 # Copy built files from builder stage
 COPY --from=builder /app/build ./build
 
-# Install Prisma client
+# Copy entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# The actual DATABASE_URL will be provided at runtime
+ENV DATABASE_URL=postgresql://user:pass@localhost:5432/db
+
+# Generate Prisma client with the default URL (will be overridden at runtime)
 RUN npx prisma generate
 
 EXPOSE 3000
 
-# Run migrations and start the application
-CMD ["sh", "-c", "npx prisma migrate deploy && npm run start"]
+# Use the entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]
