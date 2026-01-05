@@ -1,12 +1,16 @@
 #!/bin/sh
 set -e
 
+echo "Checking DATABASE_URL..."
+echo "DATABASE_URL: ${DATABASE_URL}"
+
 # Run migrations if DATABASE_URL is set
 if [ -n "$DATABASE_URL" ]; then
   echo "Running database migrations..."
   npx prisma migrate deploy
 else
-  echo "WARNING: DATABASE_URL is not set, skipping migrations"
+  echo "ERROR: DATABASE_URL is not set"
+  exit 1
 fi
 
 # Start the application
