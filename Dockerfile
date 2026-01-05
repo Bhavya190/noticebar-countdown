@@ -1,18 +1,18 @@
-FROM node:20-alpine
-RUN apk add --no-cache openssl
+# 1. Build stage (on host, not in container) – we will skip this in Docker
+# You already run `npm run build` on your machine.
 
-EXPOSE 3000
+# 2. Runtime image: just run the built server
+FROM node:20-alpine
 
 WORKDIR /app
 
-ENV NODE_ENV=production
-
+# Only copy what is needed to run
 COPY package.json package-lock.json* ./
-
 RUN npm ci --omit=dev && npm cache clean --force
 
-COPY . .
+# Copy prebuilt assets from host
+COPY build ./build
 
-RUN npm run build
+EXPOSE 3000
 
 CMD ["npm", "run", "docker-start"]

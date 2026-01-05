@@ -1,5 +1,5 @@
 import { Outlet, Scripts } from "react-router";
-import "./styles/tailwind.css"; // just import for side-effect, no variable
+import "./styles/tailwind.css";
 
 export default function App() {
   return (
