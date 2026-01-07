@@ -1,8 +1,6 @@
   import { reactRouter } from "@react-router/dev/vite";
   import { defineConfig } from "vite";
   import tsconfigPaths from "vite-tsconfig-paths";
-  import tailwindcss from 'tailwindcss';
-  import autoprefixer from 'autoprefixer';
   import path from 'path';
 
   // Related: https://github.com/remix-run/remix/issues/2835#issuecomment-1144102176
@@ -42,12 +40,10 @@
   export default defineConfig({
     css: {
       postcss: {
-        plugins: [
-          tailwindcss({
-            config: path.resolve(__dirname, 'tailwind.config.js'),
-          }),
-          autoprefixer,
-        ],
+        plugins: {
+          tailwindcss: {},
+          autoprefixer: {},
+        },
       },
     },
     server: {
