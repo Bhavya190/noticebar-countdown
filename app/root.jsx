@@ -1,4 +1,7 @@
 import { Outlet, Scripts } from "react-router";
+import { AppProvider } from "@shopify/polaris";
+import { en } from "@shopify/polaris/locales";
+import "@shopify/polaris/build/esm/styles.css";
 import "./styles/tailwind.css";
 
 export default function App() {
@@ -10,7 +13,9 @@ export default function App() {
         <title>Noticebar Countdown</title>
       </head>
       <body>
-        <Outlet />
+        <AppProvider i18n={en}>
+          <Outlet />
+        </AppProvider>
         <Scripts />
       </body>
     </html>
