@@ -1,6 +1,7 @@
 import { Outlet, Scripts } from "react-router";
 import { AppProvider } from "@shopify/polaris";
 import enTranslations from '@shopify/polaris/locales/en.json';
+import { en } from "@shopify/polaris/locales";
 import "@shopify/polaris/build/esm/styles.css";
 import "./styles/tailwind.css";
 
