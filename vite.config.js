@@ -3,6 +3,7 @@
   import tsconfigPaths from "vite-tsconfig-paths";
   import tailwindcss from 'tailwindcss';
   import autoprefixer from 'autoprefixer';
+  import path from 'path';
 
   // Related: https://github.com/remix-run/remix/issues/2835#issuecomment-1144102176
   // Replace the HOST env var with SHOPIFY_APP_URL so that it doesn't break the Vite server.
@@ -42,7 +43,9 @@
     css: {
       postcss: {
         plugins: [
-          tailwindcss,
+          tailwindcss({
+            config: path.resolve(__dirname, 'tailwind.config.js'),
+          }),
           autoprefixer,
         ],
       },
