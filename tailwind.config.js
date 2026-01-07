@@ -7,17 +7,10 @@ module.exports = {
     "./app/**/*.ts",
     "./app/**/*.tsx",
     "./app/**/*.html",
-    "./app/**/*.css",
-    "./app/routes/**/*.{js,jsx,ts,tsx}",
-    "./app/components/**/*.{js,jsx,ts,tsx}",
-    "./app/root.jsx"
+    "./app/**/*.css"
   ],
   theme: {
     extend: {},
   },
   plugins: [],
-  corePlugins: {
-    preflight: true,
-  },
-  important: true,
 }
