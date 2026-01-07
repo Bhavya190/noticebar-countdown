@@ -1,9 +1,8 @@
 import { Outlet, Scripts } from "react-router";
 import { AppProvider } from "@shopify/polaris";
-import en from "@shopify/polaris/locales/en.json";
+import enTranslations from '@shopify/polaris/locales/en.json';
 import "@shopify/polaris/build/esm/styles.css";
 import "./styles/tailwind.css";
-import TestComponent from "./components/TestComponent";
 
 export default function App() {
   return (
@@ -13,12 +12,9 @@ export default function App() {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>Noticebar Countdown</title>
       </head>
-      <body className="bg-gray-100">
-        <AppProvider i18n={en}>
-          <div className="min-h-screen p-8">
-            <TestComponent />
-            <Outlet />
-          </div>
+      <body>
+        <AppProvider i18n={enTranslations}>
+          <Outlet />
         </AppProvider>
         <Scripts />
       </body>
