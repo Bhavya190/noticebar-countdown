@@ -40,10 +40,10 @@
   export default defineConfig({
     css: {
       postcss: {
-        plugins: {
-          tailwindcss: {},
-          autoprefixer: {},
-        },
+        plugins: [
+          require('tailwindcss'),
+          require('autoprefixer'),
+        ],
       },
     },
     server: {
